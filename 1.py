@@ -17,23 +17,19 @@ else:
     print("Could not load image.")
 
 # ----- VIDEO PART -----
-# Open webcam (0 = default camera)
-cam = cv2.VideoCapture(0)
+cap = cv2.VideoCapture('sample.mp4')  # Make sure this file exists
 
-if not cam.isOpened():
-    print("Webcam not accessible.")
-else:
-    print("Showing webcam. Press 'q' to quit.")
+while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        break
+    cv2.imshow('Video', frame)
 
-    while True:
-        ret, frame = cam.read()         # Read each frame
-        if not ret:
-            break
+    # Print properties only for the first frame
+    print("Frame dtype:", frame.dtype)
+    print("Frame shape:", frame.shape)
+    print("Frame size:", frame.size)
+    break  # Remove this line if you want to play full video
 
-        cv2.imshow("Webcam", frame)     # Show frame
-
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    cam.release()
-    cv2.destroyAllWindows()
+cap.release()
+cv2.destroyAllWindows()
